@@ -1,0 +1,126 @@
+/* Profile.css */
+.profile-container {
+  max-width: 935px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #dbdbdb;
+  padding-bottom: 20px;
+}
+
+.profile-header h2 {
+  font-size: 24px;
+  font-weight: 300;
+  margin: 0;
+}
+
+.edit-button, .cancel-button, .save-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+.edit-button {
+  background-color: #f0f0f0;
+  color: #262626;
+}
+
+.cancel-button {
+  background-color: #f0f0f0;
+  color: #ed4956;
+}
+
+.save-button {
+  background-color: #0095f6;
+  color: white;
+}
+
+.profile-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 50px;
+}
+
+.profile-picture-container {
+  flex: 0 0 auto;
+}
+
+.profile-picture {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #dbdbdb;
+}
+
+.profile-picture-placeholder {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #dbdbdb;
+  color: #8e8e8e;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-display .profile-username {
+  font-size: 28px;
+  font-weight: 300;
+  margin: 0 0 20px 0;
+}
+
+.profile-display .profile-bio {
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+  white-space: pre-line;
+}
+
+.profile-form {
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.form-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #dbdbdb;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+.form-input[type="file"] {
+  padding: 5px;
+}
+
+.form-actions {
+  margin-top: 30px;
+}
+
+textarea.form-input {
+  min-height: 100px;
+  resize: vertical;
+}
