@@ -32,17 +32,17 @@ const Login = () => {
     try {
       const response = await fetch('http://localhost:5000/api/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
       const data = await response.json();
-      console.log('Login response:', data);
 
       if (response.ok) {
-         localStorage.setItem('username', data.username);
+        // ✅ Store in localStorage
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('username', data.username);
+
         alert(data.message || 'Login successful!');
         navigate('/DisplayHome');
       } else {

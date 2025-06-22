@@ -46,31 +46,45 @@ router.post("/register", async (req, res) => {
 
 
 router.post("/login", async (req, res) => {
-    const { username,email, password } = req.body; 
+  const { username, email, password } = req.body;
 
-    console.log("Logging in user:", { email,username,password });
+  console.log("Logging in user:", { email, username, password });
 
-    try {
-        const result = await db.query("SELECT * FROM users WHERE email = $1 AND username=$2", [email,username]);
+  try {
+    const result = await db.query(
+      "SELECT * FROM users WHERE email = $1 AND username = $2",
+      [email, username]
+    );
 
-        if (result.rows.length > 0) {
-            const user = result.rows[0];
-            const storedPassword = user.password;
-
-            const isMatch = await bcrypt.compare(password, storedPassword);
-
-            if (isMatch) {
-                res.json({ message: "Login successful!"});
-            } else {
-                res.status(401).json({ error: "Incorrect Password" });
-            }
-        } else {
-            res.status(404).json({ error: "User not found" });
-        }
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "Server error" });
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
     }
+
+    const user = result.rows[0];
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json({ error: "Incorrect password" });
+    }
+
+    // ✅ Generate JWT token
+    const token = jwt.sign(
+      { id: user.id, username: user.username },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    // ✅ Send token and username to frontend
+    return res.status(200).json({
+      message: "Login successful!",
+      token,
+      username: user.username
+    });
+
+  } catch (err) {
+    console.error("Login error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
 router.post("/forgotpassword", async (req, res) => {

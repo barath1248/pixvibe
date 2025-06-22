@@ -4,230 +4,220 @@ import '../styles/Profile.css';
 const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [bio, setBio] = useState('');
-  const [file, setFile] = useState(null);
   const [username, setUsername] = useState('');
-  const [isEditing, setIsEditing] = useState(false);
+  const [file, setFile] = useState(null);
   const [previewImage, setPreviewImage] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  // Fetch profile on mount
   useEffect(() => {
-    const fetchProfileData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const storedUsername = localStorage.getItem('username');
-        
-        if (!storedUsername) {
-          throw new Error('Username not found in storage');
-        }
+    const token = localStorage.getItem('token');
+    const storedUsername = localStorage.getItem('username');
+    if (!token || !storedUsername) {
+      setError('You must be logged in.');
+      setLoading(false);
+      return;
+    }
 
-        const response = await fetch(`http://localhost:5000/api/profile/${storedUsername}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if (response.status === 404) {
-          // Initialize empty profile for new users
-          setProfile({ username: storedUsername, bio: '', profile_picture: null });
-          setUsername(storedUsername);
-          setBio('');
-          setPreviewImage('');
-          return;
-        }
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch profile');
-        }
-
-        const data = await response.json();
-        setProfile(data);
-        setUsername(data.username || storedUsername);
-        setBio(data.bio || '');
-        setPreviewImage(data.profile_picture 
-          ? `http://localhost:5000/uploads/${data.profile_picture}?t=${new Date().getTime()}`
-          : '');
-
-      } catch (err) {
-        console.error('Profile fetch error:', err);
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchProfileData();
+    setUsername(storedUsername);
+    fetchProfile(storedUsername);
   }, []);
 
+  const fetchProfile = async (uname) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/profile/${uname}`);
+      if (!response.ok && response.status !== 404) {
+        throw new Error('Failed to fetch profile');
+      }
+
+      const data = await response.json();
+      if (response.status === 404 || !data.bio) {
+        setProfile({ username: uname, bio: '', profile_picture: null });
+        setBio('');
+        setPreviewImage('');
+      } else {
+        setProfile(data);
+        setBio(data.bio || '');
+        setPreviewImage(
+          data.profile_picture
+            ? `http://localhost:5000/uploads/${data.profile_picture}?t=${Date.now()}`
+            : ''
+        );
+      }
+    } catch (err) {
+      console.error(err);
+      setError('Could not load profile.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (!selectedFile) return;
-
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-    if (!allowedTypes.includes(selectedFile.type)) {
-      setError('Only JPEG, PNG, or GIF images are allowed');
-      return;
+    const selected = e.target.files[0];
+    if (selected) {
+      setFile(selected);
+      setPreviewImage(URL.createObjectURL(selected));
     }
-
-    if (selectedFile.size > 2 * 1024 * 1024) {
-      setError('File size should be less than 2MB');
-      return;
-    }
-
-    setError('');
-    setFile(selectedFile);
-    
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreviewImage(reader.result);
-    };
-    reader.readAsDataURL(selectedFile);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
-
-    if (!username.trim()) {
-      setError('Username is required');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('username', username);
-    formData.append('bio', bio);
-    if (file) formData.append('profile_picture', file);
+    setLoading(true);
 
     try {
-      setIsLoading(true);
       const token = localStorage.getItem('token');
-      
+      const formData = new FormData();
+      formData.append('username', username);
+      formData.append('bio', bio);
+      if (file) formData.append('profile_picture', file);
+
       const response = await fetch('http://localhost:5000/api/profile', {
         method: 'POST',
-        body: formData,
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
       });
 
+      const result = await response.json();
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Profile update failed');
+        throw new Error(result.error || 'Failed to save profile');
       }
 
-      const result = await response.json();
-      
-      // Update all state and localStorage
-      setProfile(result.profile || result);
-      const updatedUsername = result.profile?.username || result.username || username;
-      setUsername(updatedUsername);
-      localStorage.setItem('username', updatedUsername);
-      
-      setBio(result.profile?.bio || result.bio || '');
-      
-      if (result.profile?.profile_picture || result.profile_picture) {
-        const imageName = result.profile?.profile_picture || result.profile_picture;
-        setPreviewImage(`http://localhost:5000/uploads/${imageName}?t=${new Date().getTime()}`);
-      }
-      
+      const updated = result.profile;
+      setProfile(updated);
+      setBio(updated.bio || '');
+      setPreviewImage(
+        updated.profile_picture
+          ? `http://localhost:5000/uploads/${updated.profile_picture}?t=${Date.now()}`
+          : ''
+      );
+      setFile(null);
       setIsEditing(false);
-      setSuccess('Profile updated successfully!');
+      setSuccess('Profile saved!');
       setTimeout(() => setSuccess(''), 3000);
-      
     } catch (err) {
-      console.error('Profile update error:', err);
-      setError(err.message || 'Failed to update profile');
+      console.error(err);
+      setError(err.message || 'Error saving profile');
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  if (isLoading) {
-    return <div className="loading">Loading profile...</div>;
-  }
-
   return (
     <div className="profile-container">
-      <div className="profile-header">
-        <h2>Profile</h2>
-        {!isEditing ? (
-          <button onClick={() => setIsEditing(true)}>Edit Profile</button>
+      <div className="profile-card">
+        <div className="profile-header">
+          <h2>My Profile</h2>
+          {!isEditing ? (
+            <button className="edit-btn" onClick={() => setIsEditing(true)}>
+              <i className="fas fa-edit"></i> Edit
+            </button>
+          ) : (
+            <button
+              className="cancel-btn"
+              onClick={() => {
+                setIsEditing(false);
+                setBio(profile?.bio || '');
+                setFile(null);
+                setPreviewImage(
+                  profile?.profile_picture
+                    ? `http://localhost:5000/uploads/${profile.profile_picture}?t=${Date.now()}`
+                    : ''
+                );
+              }}
+            >
+              <i className="fas fa-times"></i> Cancel
+            </button>
+          )}
+        </div>
+
+        {error && <div className="alert error">{error}</div>}
+        {success && <div className="alert success">{success}</div>}
+
+        {loading ? (
+          <p>Loading...</p>
         ) : (
-          <button onClick={() => {
-            setIsEditing(false);
-            if (profile) {
-              setUsername(profile.username || '');
-              setBio(profile.bio || '');
-              setPreviewImage(profile.profile_picture 
-                ? `http://localhost:5000/uploads/${profile.profile_picture}`
-                : '');
-            }
-          }}>Cancel</button>
-        )}
-      </div>
-
-      {error && <div className="error">{error}</div>}
-      {success && <div className="success">{success}</div>}
-
-      <div className="profile-content">
-        <div className="profile-picture">
-          {previewImage ? (
-            <img 
-              src={previewImage} 
-              alt="Profile" 
-              onError={(e) => e.target.src = '/default-profile.png'}
-            />
-          ) : (
-            <div className="placeholder">No Image</div>
-          )}
-        </div>
-
-        <div className="profile-info">
-          {isEditing ? (
-            <form onSubmit={handleSubmit}>
-              <div>
-                <label>Username:</label>
-                <input
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                />
+          <div className="profile-content">
+            <div className="profile-picture-container">
+              <div className="profile-picture-wrapper">
+                {previewImage ? (
+                  <img
+                    src={previewImage}
+                    alt="Profile"
+                    className="profile-picture"
+                    onError={(e) => (e.target.src = '/default-profile.png')}
+                  />
+                ) : (
+                  <div className="profile-picture-placeholder">
+                    <i className="fas fa-user"></i>
+                  </div>
+                )}
+                {isEditing && (
+                  <label className="upload-label">
+                    <i className="fas fa-camera"></i>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      className="file-input"
+                    />
+                  </label>
+                )}
               </div>
-
-              <div>
-                <label>Bio:</label>
-                <textarea
-                  value={bio}
-                  onChange={(e) => setBio(e.target.value)}
-                  placeholder="Tell about yourself..."
-                  maxLength="150"
-                />
-                <small>{bio.length}/150</small>
-              </div>
-
-              <div>
-                <label>Profile Picture:</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                />
-                <small>Max 2MB (JPEG, PNG, GIF)</small>
-              </div>
-
-              <button type="submit" disabled={isLoading}>
-                {isLoading ? 'Saving...' : 'Save Changes'}
-              </button>
-            </form>
-          ) : (
-            <div className="profile-view">
-              <h3>{username || 'No username'}</h3>
-              <p>{bio || 'No bio yet'}</p>
             </div>
-          )}
-        </div>
+
+            <div className="profile-info">
+              {isEditing ? (
+                <form onSubmit={handleSubmit} className="profile-form">
+                  <div className="form-group">
+                    <label>Username</label>
+                    <input
+                      value={username}
+                      className="form-input"
+                      readOnly
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Bio</label>
+                    <textarea
+                      value={bio}
+                      onChange={(e) => setBio(e.target.value)}
+                      placeholder="Tell us about yourself..."
+                      maxLength="150"
+                      className="form-textarea"
+                    />
+                    <div className="char-count">{bio.length}/150</div>
+                  </div>
+
+                  <button type="submit" className="save-btn" disabled={loading}>
+                    {loading ? (
+                      <>
+                        <i className="fas fa-spinner fa-spin"></i> Saving...
+                      </>
+                    ) : (
+                      <>
+                        <i className="fas fa-save"></i> Save Changes
+                      </>
+                    )}
+                  </button>
+                </form>
+              ) : (
+                <div className="profile-view">
+                  <h3 className="username">{username}</h3>
+                  <p className="bio">{bio || 'No bio yet'}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
