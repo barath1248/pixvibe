@@ -19,10 +19,31 @@ const Register = () => {
   }, []);
 
   const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      const res = await fetch("http://localhost:5000/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert(data.message); // ✅ Show success message
+        navigate("/login");  // ✅ Redirect to login page
+      } else {
+        alert(data.error || "Registration failed");
+      }
+    } catch (err) {
+      console.error("Registration error:", err);
+      alert("Server error");
+    }
   };
 
   return (
@@ -30,8 +51,7 @@ const Register = () => {
       <div className={`register-container ${showForm ? 'show' : ''}`}>
         <h2 className="register-heading">Register</h2>
         <form
-          action="http://localhost:5000/api/register"
-          method="POST"
+          onSubmit={handleSubmit} // ✅ Important: bind to custom submit handler
           className="register-form"
         >
           <div className="form-group">
