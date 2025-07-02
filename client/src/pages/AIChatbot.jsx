@@ -25,7 +25,7 @@ const AIChatbot = () => {
       const botMessage = { role: "bot", text: data.response || "No response" };
       setMessages((prev) => [...prev, botMessage]);
     } catch (err) {
-      const errorMsg = { role: "bot", text: "❌ Error getting response from Gemini." };
+      const errorMsg = { role: "bot", text: "No response try again." };
       setMessages((prev) => [...prev, errorMsg]);
     }
 
