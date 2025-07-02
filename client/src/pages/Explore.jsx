@@ -1,20 +1,22 @@
 // src/components/Explore.jsx
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import "./Styles/Explore.css"; // Optional: Create for styling
+import "../styles/Explore.css";
 
 const Explore = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const currentUsername = localStorage.getItem("username"); // or from context
+  const currentUsername = localStorage.getItem("username");
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/posts/explore");
-        const otherUsersPosts = res.data.filter(post => post.username !== currentUsername);
+        const response = await fetch(`http://localhost:5000/api/posts/explore?username=${currentUsername}`);
+        if (!response.ok) throw new Error("Failed to fetch posts");
+
+        const data = await response.json();
+        const otherUsersPosts = data.filter(post => post.username !== currentUsername);
         setPosts(otherUsersPosts);
         setLoading(false);
       } catch (err) {
@@ -38,7 +40,7 @@ const Explore = () => {
         posts.map((post) => (
           <div key={post.id} className="post-card">
             <h4>@{post.username}</h4>
-            {post.imageUrl && <img src={post.imageUrl} alt="Post" className="post-image" />}
+            {post.image_url && <img src={post.image_url} alt="Post" className="post-image" />}
             <p>{post.caption}</p>
           </div>
         ))

@@ -6,12 +6,12 @@ import Home from './pages/Home.jsx';
 import DisplayHome from './pages/DisplayHome.jsx';
 import ForgetPassword from './pages/ForgetPassword.jsx';
 import DashboardLayout from './Components/DashboardLayout.jsx';
-import Music from './pages/Music.jsx';
 import Chat from './pages/Chat.jsx';
 import Watch from './pages/Watch.jsx';
 import Profile from './pages/Profile.jsx';
 import Post from './pages/Post.jsx';
 import Explore from './pages/Explore.jsx';
+import AIChatbot from './pages/AIChatbot.jsx';
 
 
 
@@ -36,10 +36,10 @@ const App = () => {
           }
         />
          <Route
-          path="/music"
+          path="/AIChatbot"
           element={
             <DashboardLayout>
-              <Music />
+              <AIChatbot />
             </DashboardLayout>
           }
         />

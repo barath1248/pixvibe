@@ -6,7 +6,7 @@ import {
   FaPlus,
   FaComments,
   FaVideo,
-  FaMusic,
+  FaRobot,
   FaSignOutAlt,
 } from "react-icons/fa";
 import "../styles/Sidebar.css";
@@ -21,7 +21,7 @@ const Sidebar = () => {
     { label: "Post", icon: <FaPlus />, route: "/post" },
     { label: "Chat", icon: <FaComments />, route: "/chat" },
     { label: "Watch", icon: <FaVideo />, route: "/watch" },
-    { label: "Music", icon: <FaMusic />, route: "/music" },
+    { label: "AIChatbot", icon: <FaRobot />, route: "/AIChatbot" },
   ];
 
   return (

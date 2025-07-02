@@ -5,8 +5,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import authRoutes from './routes/authRoutes.js';
 import watchRoutes from './routes/watchRoutes.js';
-import musicRoutes from './routes/musicRoutes.js';
 import profileRoutes from './routes/profileRoutes.js';
+import aiChatRouter from './routes/aiChat.js';
 
 dotenv.config();
 
@@ -39,7 +39,7 @@ app.get("/", (req, res) => {
 app.use("/api", authRoutes);
 app.use("/api/watch",watchRoutes);
 app.use('/api/profile', profileRoutes);
-app.use('/api/music', musicRoutes);
+app.use("/api/ai-chat", aiChatRouter);
 //app.use('/api/music', musicRoutes);
 
 // 404 Handler
