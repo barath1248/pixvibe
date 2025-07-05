@@ -1,0 +1,57 @@
+.resume-screening {
+  max-width: 600px;
+  margin: auto;
+  padding: 2rem;
+  border-radius: 12px;
+  background: #f4f4f8;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.textarea {
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  resize: vertical;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.fileInput {
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.button {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.button:disabled {
+  background-color: #95a5a6;
+}
+
+.score {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.good {
+  color: green;
+  font-weight: bold;
+}
+
+.bad {
+  color: red;
+  font-weight: bold;
+}

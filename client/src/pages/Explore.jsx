@@ -1,52 +1,74 @@
-// src/components/Explore.jsx
-import React, { useEffect, useState } from "react";
-import "../styles/Explore.css";
+import React, { useState } from "react";
+import "../styles/ResumeScreening.css";
 
-const Explore = () => {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+const ResumeScreening = () => {
+  const [jobDesc, setJobDesc] = useState("");
+  const [resumeFile, setResumeFile] = useState(null);
+  const [score, setScore] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const currentUsername = localStorage.getItem("username");
+  const handleUpload = async (e) => {
+    e.preventDefault();
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/api/posts/explore?username=${currentUsername}`);
-        if (!response.ok) throw new Error("Failed to fetch posts");
+    if (!resumeFile || !jobDesc) {
+      alert("Please upload a resume and enter job description.");
+      return;
+    }
 
-        const data = await response.json();
-        const otherUsersPosts = data.filter(post => post.username !== currentUsername);
-        setPosts(otherUsersPosts);
-        setLoading(false);
-      } catch (err) {
-        console.error(err);
-        setError("Failed to fetch posts");
-        setLoading(false);
+    const formData = new FormData();
+    formData.append("resume", resumeFile);
+    formData.append("jobDesc", jobDesc);
+
+    try {
+      setLoading(true);
+      const response = await fetch("http://localhost:5000/api/resume/screen", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to upload or process resume.");
       }
-    };
 
-    fetchPosts();
-  }, [currentUsername]);
-
-  if (loading) return <div>Loading posts...</div>;
-  if (error) return <div>{error}</div>;
+      const data = await response.json();
+      setScore(data.matchScore);
+    } catch (err) {
+      console.error("Error:", err);
+      alert("Something went wrong while screening the resume.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="explore-container">
-      {posts.length === 0 ? (
-        <p>No posts to explore.</p>
-      ) : (
-        posts.map((post) => (
-          <div key={post.id} className="post-card">
-            <h4>@{post.username}</h4>
-            {post.image_url && <img src={post.image_url} alt="Post" className="post-image" />}
-            <p>{post.caption}</p>
-          </div>
-        ))
+    <div className="resume-screening">
+      <h2>Resume Screening</h2>
+      <form onSubmit={handleUpload}>
+        <textarea
+          rows="5"
+          placeholder="Paste job description here..."
+          value={jobDesc}
+          onChange={(e) => setJobDesc(e.target.value)}
+          required
+        ></textarea>
+        <input
+          type="file"
+          accept=".pdf,.doc,.docx"
+          onChange={(e) => setResumeFile(e.target.files[0])}
+          required
+        />
+        <button type="submit" disabled={loading}>
+          {loading ? "Screening..." : "Submit"}
+        </button>
+      </form>
+      {score !== null && (
+        <div className="score">
+          <h3>Match Score: {score}%</h3>
+          {score > 70 ? "✅ Good Match!" : "⚠️ Try improving keywords in your resume."}
+        </div>
       )}
     </div>
   );
 };
 
-export default Explore;
+export default ResumeScreening;

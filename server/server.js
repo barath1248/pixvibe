@@ -8,6 +8,7 @@ import watchRoutes from './routes/watchRoutes.js';
 import profileRoutes from './routes/profileRoutes.js';
 import aiChatRouter from './routes/aiChat.js';
 
+
 dotenv.config();
 
 const app = express();
@@ -40,7 +41,7 @@ app.use("/api", authRoutes);
 app.use("/api/watch",watchRoutes);
 app.use('/api/profile', profileRoutes);
 app.use("/api/ai-chat", aiChatRouter);
-//app.use('/api/music', musicRoutes);
+
 
 // 404 Handler
 app.use((req, res) => { 
