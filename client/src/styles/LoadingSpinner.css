@@ -1,0 +1,153 @@
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.spinner-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.spinner-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid transparent;
+  border-radius: 50%;
+  animation: spinner-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.spinner-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+
+.spinner-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.spinner-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+@keyframes spinner-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Size variants */
+.loading-spinner.small .spinner-ring {
+  width: 40px;
+  height: 40px;
+}
+
+.loading-spinner.small .spinner-ring div {
+  width: 32px;
+  height: 32px;
+  margin: 4px;
+  border-width: 4px;
+}
+
+.loading-spinner.medium .spinner-ring {
+  width: 80px;
+  height: 80px;
+}
+
+.loading-spinner.large .spinner-ring {
+  width: 120px;
+  height: 120px;
+}
+
+.loading-spinner.large .spinner-ring div {
+  width: 96px;
+  height: 96px;
+  margin: 12px;
+  border-width: 12px;
+}
+
+/* Color variants */
+.loading-spinner.primary .spinner-ring div {
+  border-top-color: #667eea;
+}
+
+.loading-spinner.secondary .spinner-ring div {
+  border-top-color: #764ba2;
+}
+
+.loading-spinner.success .spinner-ring div {
+  border-top-color: #43e97b;
+}
+
+.loading-spinner.warning .spinner-ring div {
+  border-top-color: #fa709a;
+}
+
+.loading-spinner.error .spinner-ring div {
+  border-top-color: #ef4444;
+}
+
+.loading-spinner.white .spinner-ring div {
+  border-top-color: white;
+}
+
+/* Loading text */
+.loading-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #64748b;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Centered full-screen loading */
+.loading-spinner.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+}
+
+/* Inline loading */
+.loading-spinner.inline {
+  flex-direction: row;
+  gap: 12px;
+}
+
+.loading-spinner.inline .spinner-ring {
+  width: 20px;
+  height: 20px;
+}
+
+.loading-spinner.inline .spinner-ring div {
+  width: 16px;
+  height: 16px;
+  margin: 2px;
+  border-width: 2px;
+}
+
+.loading-spinner.inline .loading-text {
+  font-size: 0.875rem;
+} 

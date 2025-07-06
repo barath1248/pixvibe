@@ -1,26 +1,30 @@
 import React, { useState } from "react";
-import "../styles/ResumeScreening.css";
+import styles from "../styles/ResumeScreening.module.css";
 
 const ResumeScreening = () => {
   const [jobDesc, setJobDesc] = useState("");
   const [resumeFile, setResumeFile] = useState(null);
   const [score, setScore] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleUpload = async (e) => {
     e.preventDefault();
 
     if (!resumeFile || !jobDesc) {
-      alert("Please upload a resume and enter job description.");
+      setError("Please upload a resume and enter job description.");
       return;
     }
+
+    setLoading(true);
+    setError("");
+    setScore(null);
 
     const formData = new FormData();
     formData.append("resume", resumeFile);
     formData.append("jobDesc", jobDesc);
 
     try {
-      setLoading(true);
       const response = await fetch("http://localhost:5000/api/resume/screen", {
         method: "POST",
         body: formData,
@@ -34,37 +38,48 @@ const ResumeScreening = () => {
       setScore(data.matchScore);
     } catch (err) {
       console.error("Error:", err);
-      alert("Something went wrong while screening the resume.");
+      setError("Something went wrong while screening the resume.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="resume-screening">
-      <h2>Resume Screening</h2>
-      <form onSubmit={handleUpload}>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Resume Screening</h2>
+      <form className={styles.form} onSubmit={handleUpload}>
+        <label className={styles.label}>Job Description</label>
         <textarea
-          rows="5"
+          className={styles.textarea}
+          rows="6"
           placeholder="Paste job description here..."
           value={jobDesc}
           onChange={(e) => setJobDesc(e.target.value)}
-          required
-        ></textarea>
-        <input
-          type="file"
-          accept=".pdf,.doc,.docx"
-          onChange={(e) => setResumeFile(e.target.files[0])}
-          required
         />
-        <button type="submit" disabled={loading}>
-          {loading ? "Screening..." : "Submit"}
+
+        <label className={styles.label}>Upload Resume (.pdf)</label>
+        <input
+          className={styles.fileInput}
+          type="file"
+          accept=".pdf"
+          onChange={(e) => setResumeFile(e.target.files[0])}
+        />
+
+        <button className={styles.button} type="submit" disabled={loading}>
+          {loading ? "Processing..." : "Submit"}
         </button>
       </form>
+
+      {error && <div className={styles.error}>{error}</div>}
+
       {score !== null && (
-        <div className="score">
+        <div className={styles.result}>
           <h3>Match Score: {score}%</h3>
-          {score > 70 ? "✅ Good Match!" : "⚠️ Try improving keywords in your resume."}
+          {score >= 70 ? (
+            <p className={styles.good}>✅ Good Match!</p>
+          ) : (
+            <p className={styles.bad}>⚠️ Try improving your keywords.</p>
+          )}
         </div>
       )}
     </div>

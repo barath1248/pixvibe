@@ -1,0 +1,301 @@
+/* Dark mode styles */
+[data-theme="dark"] .post-container {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .post-header {
+  background: rgba(30, 41, 59, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .post-header h1 {
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .post-header p {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .post-form {
+  background: rgba(30, 41, 59, 0.5);
+}
+
+[data-theme="dark"] .form-card {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .form-card:hover {
+  background: rgba(51, 65, 85, 0.8);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .form-group label {
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .form-group textarea,
+[data-theme="dark"] .form-group select {
+  background: rgba(15, 23, 42, 0.8);
+  color: #f1f5f9;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .form-group input::placeholder,
+[data-theme="dark"] .form-group textarea::placeholder {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .form-group input:focus,
+[data-theme="dark"] .form-group textarea:focus,
+[data-theme="dark"] .form-group select:focus {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: #667eea;
+}
+
+[data-theme="dark"] .file-upload-area {
+  background: rgba(15, 23, 42, 0.8);
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .file-upload-area:hover {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: #667eea;
+}
+
+[data-theme="dark"] .file-upload-area p {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .btn {
+  background: rgba(30, 41, 59, 0.8);
+  color: #f1f5f9;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .btn:hover {
+  background: rgba(51, 65, 85, 0.8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+[data-theme="dark"] .btn-primary:hover {
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+[data-theme="dark"] .btn-secondary {
+  background: rgba(30, 41, 59, 0.8);
+  color: #f1f5f9;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background: rgba(51, 65, 85, 0.8);
+}
+
+[data-theme="dark"] .loading-spinner {
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #667eea;
+}
+
+[data-theme="dark"] .success-message {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+}
+
+[data-theme="dark"] .error-message {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+.post-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transition: all 0.3s ease;
+}
+
+.post-page-container {
+  max-width: 700px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 6px 32px rgba(0,0,0,0.10);
+  padding: 36px 28px 32px 28px;
+}
+
+.post-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.post-form textarea {
+  border-radius: 10px;
+  border: 1.5px solid #e5e7eb;
+  padding: 14px;
+  font-size: 1.1rem;
+  resize: vertical;
+  min-height: 70px;
+  background: #f8fafc;
+  transition: border 0.2s;
+}
+
+.post-form textarea:focus {
+  border-color: #667eea;
+  outline: none;
+}
+
+.post-form input[type="file"] {
+  margin-top: 4px;
+}
+
+.post-form button {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 32px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(102,126,234,0.08);
+}
+
+.post-form button:disabled {
+  background: #e5e7eb;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.file-upload-area {
+  margin-bottom: 8px;
+}
+
+.post-image-preview {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.post-image-preview img {
+  max-width: 220px;
+  max-height: 220px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  object-fit: cover;
+}
+
+.posts-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  margin-top: 32px;
+}
+
+@media (min-width: 700px) {
+  .posts-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.post-item {
+  background: #fafbfc;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  padding: 20px 24px 18px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: flex-start;
+  min-height: 180px;
+  transition: box-shadow 0.2s, transform 0.2s;
+  position: relative;
+}
+
+.post-item:hover {
+  box-shadow: 0 8px 32px rgba(102,126,234,0.16);
+  transform: translateY(-2px) scale(1.01);
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 2px;
+}
+
+.post-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+
+.post-header strong {
+  font-size: 1.08rem;
+  color: #22223b;
+}
+
+.post-header span {
+  margin-left: 8px;
+  color: #888;
+  font-size: 0.98rem;
+}
+
+.post-content {
+  font-size: 1.13rem;
+  color: #22223b;
+  margin-bottom: 8px;
+  word-break: break-word;
+  line-height: 1.6;
+}
+
+.post-image {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.post-image img {
+  max-width: 100%;
+  max-height: 420px;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 700px) {
+  .post-page-container {
+    padding: 16px 2vw;
+  }
+  .post-item {
+    padding: 12px 6px;
+  }
+  .post-avatar {
+    width: 32px;
+    height: 32px;
+  }
+} 

@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useTheme } from "../context/ThemeContext";
 import {
   FaUserCircle,
   FaSearch,
@@ -8,16 +9,22 @@ import {
   FaVideo,
   FaRobot,
   FaSignOutAlt,
+  FaTachometerAlt,
+  FaSun,
+  FaMoon,
+  FaFileAlt,
 } from "react-icons/fa";
 import "../styles/Sidebar.css";
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { isDarkMode, toggleTheme } = useTheme();
 
   const navItems = [
+    { label: "Dashboard", icon: <FaTachometerAlt />, route: "/dashboard" },
     { label: "Profile", icon: <FaUserCircle />, route: "/profile" },
-    { label: "Explore", icon: <FaSearch />, route: "/explore" },
+    { label: "ResumeScreening", icon: <FaFileAlt />, route: "/ResumeScreening" },
     { label: "Post", icon: <FaPlus />, route: "/post" },
     { label: "Chat", icon: <FaComments />, route: "/chat" },
     { label: "Watch", icon: <FaVideo />, route: "/watch" },
@@ -48,9 +55,17 @@ const Sidebar = () => {
         ))}
       </nav>
 
-      {/* Footer */}
-      <div className="sidebar__footer">
-        <button className="sidebar__logout" onClick={() => navigate("/login")}>
+      {/* Bottom Actions */}
+      <div className="sidebar__top-actions">
+        <button className="sidebar__theme-toggle" onClick={toggleTheme}>
+          <span className="icon">
+            {isDarkMode ? <FaSun /> : <FaMoon />}
+          </span>
+          <span className="label">
+            {isDarkMode ? "Light Mode" : "Dark Mode"}
+          </span>
+        </button>
+        <button className="sidebar__logout" onClick={() => navigate("/login")}> 
           <FaSignOutAlt className="icon" />
           <span className="label">Logout</span>
         </button>

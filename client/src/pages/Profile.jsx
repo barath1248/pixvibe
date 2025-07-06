@@ -11,6 +11,9 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [userPosts, setUserPosts] = useState([]);
+  const [postsLoading, setPostsLoading] = useState(true);
+  const [postsError, setPostsError] = useState('');
 
   // Fetch profile on mount
   useEffect(() => {
@@ -25,6 +28,14 @@ const Profile = () => {
     setUsername(storedUsername);
     fetchProfile(storedUsername);
   }, []);
+
+  // Fetch user posts after profile is loaded
+  useEffect(() => {
+    if (profile && profile.username) {
+      fetchUserPosts();
+    }
+    // eslint-disable-next-line
+  }, [profile]);
 
   const fetchProfile = async (uname) => {
     try {
@@ -52,6 +63,24 @@ const Profile = () => {
       setError('Could not load profile.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchUserPosts = async () => {
+    setPostsLoading(true);
+    setPostsError('');
+    try {
+      const token = localStorage.getItem('token');
+      // Get user id from token
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const userId = payload.id;
+      const res = await fetch(`http://localhost:5000/api/posts/user/${userId}`);
+      const data = await res.json();
+      setUserPosts(data);
+    } catch (err) {
+      setPostsError('Failed to load your posts');
+    } finally {
+      setPostsLoading(false);
     }
   };
 
@@ -112,6 +141,7 @@ const Profile = () => {
 
   return (
     <div className="profile-container">
+      {/* Profile card always at the top */}
       <div className="profile-card">
         <div className="profile-header">
           <h2>My Profile</h2>
@@ -216,6 +246,48 @@ const Profile = () => {
                 </div>
               )}
             </div>
+          </div>
+        )}
+      </div>
+
+      {/* Spacer for clarity */}
+      <div style={{ height: 32 }} />
+
+      {/* Posts section always at the bottom, full width */}
+      <div className="profile-posts-section">
+        <h3 style={{marginBottom: 18, fontWeight: 700, fontSize: '1.2rem'}}>My Posts</h3>
+        {postsLoading ? (
+          <p>Loading your posts...</p>
+        ) : postsError ? (
+          <p style={{ color: 'red' }}>{postsError}</p>
+        ) : userPosts.length === 0 ? (
+          <p>You haven't posted anything yet.</p>
+        ) : (
+          <div className="posts-list">
+            {userPosts.map(post => (
+              <div key={post.id} className="post-item">
+                <div className="post-header">
+                  <img
+                    src={post.profile_picture || '/default-avatar.png'}
+                    alt={post.username}
+                    className="post-avatar"
+                    width={32}
+                    height={32}
+                    style={{ borderRadius: '50%', marginRight: 8 }}
+                  />
+                  <strong>{post.username}</strong>
+                  <span style={{ marginLeft: 8, color: '#888', fontSize: 12 }}>
+                    {new Date(post.created_at).toLocaleString()}
+                  </span>
+                </div>
+                {post.content && <div className="post-content">{post.content}</div>}
+                {post.image_url && (
+                  <div className="post-image">
+                    <img src={post.image_url.startsWith('http') ? post.image_url : `http://localhost:5000/uploads/${post.image_url}`} alt="Post" />
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         )}
       </div>

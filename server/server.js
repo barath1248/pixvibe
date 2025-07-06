@@ -7,7 +7,10 @@ import authRoutes from './routes/authRoutes.js';
 import watchRoutes from './routes/watchRoutes.js';
 import profileRoutes from './routes/profileRoutes.js';
 import aiChatRouter from './routes/aiChat.js';
-
+import resumeRoutes from './routes/resume.js';
+import chatRoutes from './routes/chatRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
+import postsRoutes from './routes/posts.js';
 
 dotenv.config();
 
@@ -26,8 +29,6 @@ app.use(cors({
   credentials: true
 }));
 
-
-
 // View Engine Setup
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -41,15 +42,15 @@ app.use("/api", authRoutes);
 app.use("/api/watch",watchRoutes);
 app.use('/api/profile', profileRoutes);
 app.use("/api/ai-chat", aiChatRouter);
-
+app.use("/api/resume", resumeRoutes);
+app.use("/api/chat", chatRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/posts", postsRoutes);
 
 // 404 Handler
 app.use((req, res) => { 
   res.status(404).send("404. Page not found.");
 });
-
-
-
 
 // Error Handler
 app.use((err, req, res, next) => {

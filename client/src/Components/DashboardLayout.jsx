@@ -1,12 +1,16 @@
 import React from 'react';
-import Sidebar from './Sidebar'; 
-import '../styles/DashboardLayout.css'; 
+import Sidebar from './Sidebar.jsx';
+import '../styles/DashboardLayout.css';
 
 const DashboardLayout = ({ children }) => {
   return (
     <div className="dashboard-layout">
       <Sidebar />
-      <main className="main-content">{children}</main>
+      <main className="dashboard-main">
+        <div className="dashboard-content">
+          {children}
+        </div>
+      </main>
     </div>
   );
 };

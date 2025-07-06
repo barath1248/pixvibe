@@ -44,7 +44,7 @@ const Login = () => {
         localStorage.setItem('username', data.username);
 
         alert(data.message || 'Login successful!');
-        navigate('/DisplayHome');
+        navigate('/dashboard');
       } else {
         setError(data.error || 'Login failed');
       }
