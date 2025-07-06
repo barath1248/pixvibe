@@ -26,3 +26,5 @@ Thumbs.db
 
 # Optional coverage directory
 coverage
+
+server/uploads/
