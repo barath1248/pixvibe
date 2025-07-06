@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import '../styles/Post.css';
 
 const Post = () => {
   const [content, setContent] = useState('');
