@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaSearch, FaPlay, FaEye, FaClock, FaYoutube, FaSpinner, FaFilter } from 'react-icons/fa';
-import '../styles/Watch.css';
+import '../styles/watch.css';
 
 const Watch = () => {
   const [videos, setVideos] = useState([]);
