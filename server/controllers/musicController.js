@@ -11,6 +11,7 @@ export const getTrendingMusic = async (req, res) => {
     const data = await response.json();
     res.status(200).json(data);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: 'Server Error: ' + err.message });
   }
 };
@@ -26,6 +27,7 @@ export const getMusicById = async (req, res) => {
     }
     res.status(200).json(data.data[0]);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: 'Server Error: ' + err.message });
   }
 };
@@ -38,6 +40,7 @@ export const searchMusic = async (req, res) => {
     const data = await response.json();
     res.status(200).json(data);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: 'Server Error: ' + err.message });
   }
 };
