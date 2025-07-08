@@ -109,8 +109,8 @@ router.post("/forgotpassword", async (req, res) => {
     // Save token to DB (make sure 'reset_token' column exists)
     await pool.query("UPDATE users SET reset_token = $1 WHERE email = $2", [token, email]);
 
-    // Reset link
-    const resetLink = `http://localhost:5000/resetpassword/${token}`;
+    // Use your deployed frontend URL for the reset link
+    const resetLink = `${process.env.FRONTEND_URL}/resetpassword/${token}`;
    
     // Send email
     try {
