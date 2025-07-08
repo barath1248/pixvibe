@@ -13,6 +13,7 @@ const Register = () => {
   });
 
   const [showForm, setShowForm] = useState(false);
+  const [error, setError] = useState(null); // Added error state
 
   useEffect(() => {
     setShowForm(true);
@@ -35,10 +36,11 @@ const Register = () => {
       const data = await res.json();
 
       if (res.ok) {
-        alert(data.message); // ✅ Show success message
+        // alert(data.message); // Removed alert
         navigate("/login");  // ✅ Redirect to login page
       } else {
-        alert(data.error || "Registration failed");
+        // alert(data.error || "Registration failed"); // Removed alert
+        setError(data.error || "Registration failed"); // Show error inline
       }
     } catch (err) {
       console.error("Registration error:", err);
@@ -91,6 +93,7 @@ const Register = () => {
             />
           </div>
           <button type="submit" className="register-button">Register</button>
+          {error && <p className="register-error" style={{ color: 'red', marginTop: '10px' }}>{error}</p>}
           <div className="link-row">
             <button type="button" className="link-button" onClick={() => navigate('/login')}>
               Back to Login

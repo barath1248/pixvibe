@@ -43,7 +43,7 @@ const Login = () => {
         localStorage.setItem('token', data.token);
         localStorage.setItem('username', data.username);
 
-        alert(data.message || 'Login successful!');
+        // alert(data.message || 'Login successful!'); // Removed alert
         navigate('/dashboard');
       } else {
         setError(data.error || 'Login failed');
