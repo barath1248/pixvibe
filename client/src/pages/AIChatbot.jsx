@@ -22,7 +22,8 @@ const AIChatbot = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/ai-chat", {
+      const BASE_URL = 'https://pixvibe.onrender.com';
+      const res = await fetch(`${BASE_URL}/api/ai-chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),

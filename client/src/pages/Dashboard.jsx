@@ -81,7 +81,8 @@ const Dashboard = () => {
       setStatsError(null);
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:5000/api/dashboard/stats', {
+        const BASE_URL = 'https://pixvibe.onrender.com';
+        const response = await fetch(`${BASE_URL}/api/dashboard/stats`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -125,12 +126,13 @@ const Dashboard = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) return;
-    fetch('http://localhost:5000/api/dashboard/session/start', {
+    const BASE_URL = 'https://pixvibe.onrender.com';
+    fetch(`${BASE_URL}/api/dashboard/session/start`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${token}` }
     });
     const endSession = () => {
-      fetch('http://localhost:5000/api/dashboard/session/end', {
+      fetch(`${BASE_URL}/api/dashboard/session/end`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -146,7 +148,8 @@ const Dashboard = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) return;
-    fetch('http://localhost:5000/api/dashboard/average-session', {
+    const BASE_URL = 'https://pixvibe.onrender.com';
+    fetch(`${BASE_URL}/api/dashboard/average-session`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => res.json())
@@ -157,7 +160,8 @@ const Dashboard = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) return;
-    fetch('http://localhost:5000/api/dashboard/total-session', {
+    const BASE_URL = 'https://pixvibe.onrender.com';
+    fetch(`${BASE_URL}/api/dashboard/total-session`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => res.json())

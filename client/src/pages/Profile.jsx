@@ -39,7 +39,8 @@ const Profile = () => {
 
   const fetchProfile = async (uname) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/profile/${uname}`);
+      const BASE_URL = 'https://pixvibe.onrender.com';
+      const response = await fetch(`${BASE_URL}/api/profile/${uname}`);
       if (!response.ok && response.status !== 404) {
         throw new Error('Failed to fetch profile');
       }
@@ -74,7 +75,8 @@ const Profile = () => {
       // Get user id from token
       const payload = JSON.parse(atob(token.split('.')[1]));
       const userId = payload.id;
-      const res = await fetch(`http://localhost:5000/api/posts/user/${userId}`);
+      const BASE_URL = 'https://pixvibe.onrender.com';
+      const res = await fetch(`${BASE_URL}/api/posts/user/${userId}`);
       const data = await res.json();
       setUserPosts(data);
     } catch (err) {
@@ -100,12 +102,13 @@ const Profile = () => {
 
     try {
       const token = localStorage.getItem('token');
+      const BASE_URL = 'https://pixvibe.onrender.com';
       const formData = new FormData();
       formData.append('username', username);
       formData.append('bio', bio);
       if (file) formData.append('profile_picture', file);
 
-      const response = await fetch('http://localhost:5000/api/profile', {
+      const response = await fetch(`${BASE_URL}/api/profile`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,

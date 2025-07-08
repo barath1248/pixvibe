@@ -54,7 +54,8 @@ const Watch = () => {
       const token = localStorage.getItem('token');
       if (!token) return;
 
-      const response = await fetch('http://localhost:5000/api/watch/track-view', {
+      const BASE_URL = 'https://pixvibe.onrender.com';
+      const response = await fetch(`${BASE_URL}/api/watch/track-view`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

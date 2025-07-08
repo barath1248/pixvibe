@@ -17,7 +17,8 @@ const ForgetPassword = () => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/forgotpassword', {
+      const BASE_URL = 'https://pixvibe.onrender.com';
+      const response = await fetch(`${BASE_URL}/api/forgotpassword`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

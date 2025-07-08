@@ -25,7 +25,8 @@ const ResumeScreening = () => {
     formData.append("jobDesc", jobDesc);
 
     try {
-      const response = await fetch("http://localhost:5000/api/resume/screen", {
+      const BASE_URL = 'https://pixvibe.onrender.com';
+      const response = await fetch(`${BASE_URL}/api/resume/screen`, {
         method: "POST",
         body: formData,
       });

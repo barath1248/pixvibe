@@ -30,7 +30,8 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/login', {
+      const BASE_URL = 'https://pixvibe.onrender.com';
+      const response = await fetch(`${BASE_URL}/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

@@ -73,7 +73,8 @@ const Chat = () => {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/chat/users', {
+      const BASE_URL = 'https://pixvibe.onrender.com';
+      const response = await fetch(`${BASE_URL}/api/chat/users`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -110,7 +111,8 @@ const Chat = () => {
   const fetchMessages = async (userId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/chat/messages/${userId}`, {
+      const BASE_URL = 'https://pixvibe.onrender.com';
+      const response = await fetch(`${BASE_URL}/api/chat/messages/${userId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -142,7 +144,8 @@ const Chat = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/chat/messages', {
+      const BASE_URL = 'https://pixvibe.onrender.com';
+      const response = await fetch(`${BASE_URL}/api/chat/messages`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -183,7 +186,8 @@ const Chat = () => {
   const updateLastSeen = async () => {
     try {
       const token = localStorage.getItem('token');
-      await fetch('http://localhost:5000/api/chat/last-seen', {
+      const BASE_URL = 'https://pixvibe.onrender.com';
+      await fetch(`${BASE_URL}/api/chat/last-seen`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,

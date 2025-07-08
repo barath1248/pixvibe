@@ -17,7 +17,8 @@ const Post = () => {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/posts');
+      const BASE_URL = 'https://pixvibe.onrender.com';
+      const res = await fetch(`${BASE_URL}/api/posts`);
       const data = await res.json();
       setPosts(data);
       setError(null);
@@ -41,10 +42,11 @@ const Post = () => {
     setSuccess(null);
     try {
       const token = localStorage.getItem('token');
+      const BASE_URL = 'https://pixvibe.onrender.com';
       const formData = new FormData();
       formData.append('content', content);
       if (image) formData.append('image', image);
-      const res = await fetch('http://localhost:5000/api/posts', {
+      const res = await fetch(`${BASE_URL}/api/posts`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
