@@ -31,21 +31,15 @@ export const uploadProfile = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Create or update profile
-    const result = await pool.query(
-      `INSERT INTO profile (username, bio, profile_picture)
-       VALUES ($1, $2, $3)
-       ON CONFLICT (username) 
-       DO UPDATE SET 
-         bio = EXCLUDED.bio,
-         profile_picture = COALESCE(EXCLUDED.profile_picture, profile.profile_picture)
-       RETURNING *`,
+    // Update user profile in users table
+    await pool.query(
+      `UPDATE users SET bio = $2, profile_picture = $3 WHERE username = $1`,
       [username, bio || null, profile_picture]
     );
 
     res.status(200).json({
       success: true,
-      profile: result.rows[0]
+      profile: { username, bio, profile_picture }
     });
 
   } catch (err) {
@@ -71,10 +65,9 @@ export const getProfile = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Get profile data
+    // Get profile data from users table
     const profileResult = await pool.query(
-      `SELECT p.* FROM profile p
-       WHERE p.username = $1`,
+      `SELECT * FROM users WHERE username = $1`,
       [username]
     );
 
