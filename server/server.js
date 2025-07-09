@@ -55,7 +55,11 @@ app.use((req, res) => {
 // Error Handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('Something broke!');
+  if (req.originalUrl.startsWith('/api/')) {
+    res.status(500).json({ error: 'Internal server error', details: err.message });
+  } else {
+    res.status(500).send('Something broke!');
+  }
 });
 
 app.listen(port, () => {
