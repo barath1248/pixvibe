@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../styles/Post.css';
 
+const BASE_URL = 'https://pixvibe.onrender.com';
+
 const Post = () => {
   const [content, setContent] = useState('');
   const [image, setImage] = useState(null);
@@ -17,7 +19,6 @@ const Post = () => {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      const BASE_URL = 'https://pixvibe.onrender.com';
       const res = await fetch(`${BASE_URL}/api/posts`);
       const data = await res.json();
       setPosts(data);
@@ -42,7 +43,6 @@ const Post = () => {
     setSuccess(null);
     try {
       const token = localStorage.getItem('token');
-      const BASE_URL = 'https://pixvibe.onrender.com';
       const formData = new FormData();
       formData.append('content', content);
       if (image) formData.append('image', image);
@@ -188,7 +188,7 @@ const Post = () => {
                 {post.content && <div className="post-content">{post.content}</div>}
                 {post.image_url && (
                   <div className="post-image">
-                    <img src={post.image_url.startsWith('http') ? post.image_url : `http://localhost:5000/uploads/${post.image_url}`} alt="Post" />
+                    <img src={post.image_url.startsWith('http') ? post.image_url : `${BASE_URL}/uploads/${post.image_url}`} alt="Post" />
                   </div>
                 )}
               </div>
