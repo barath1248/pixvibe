@@ -222,4 +222,42 @@
 .login-button:focus {
   animation: successPulse 0.3s ease-in-out;
 }
+
+/* Add dark mode styles */
+[data-theme='dark'] .login-container {
+  background: rgba(31, 41, 55, 0.98);
+  color: #f3f4f6;
+}
+[data-theme='dark'] .form-group input {
+  background: rgba(31, 41, 55, 0.95);
+  color: #f3f4f6;
+  border-color: #374151;
+}
+[data-theme='dark'] .form-group input:focus {
+  background: rgba(55, 65, 81, 0.98);
+  border-color: #a5b4fc;
+  color: #fff;
+}
+[data-theme='dark'] .form-group label {
+  color: #d1d5db;
+}
+[data-theme='dark'] .login-button,
+[data-theme='dark'] .link-button {
+  background: linear-gradient(135deg, #232946 0%, #3a3f5a 100%);
+  color: #f3f4f6;
+  border: none;
+}
+[data-theme='dark'] .login-button:hover,
+[data-theme='dark'] .link-button:hover {
+  background: linear-gradient(135deg, #3a3f5a 0%, #232946 100%);
+  color: #fff;
+}
+
+/* Center all button text */
+button, .login-button, .link-button {
+  text-align: center !important;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
   

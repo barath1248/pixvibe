@@ -17,6 +17,16 @@ const Register = () => {
 
   useEffect(() => {
     setShowForm(true);
+    // Force light mode for register page
+    const prevTheme = document.documentElement.getAttribute('data-theme');
+    document.documentElement.setAttribute('data-theme', 'light');
+    return () => {
+      if (prevTheme) {
+        document.documentElement.setAttribute('data-theme', prevTheme);
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+    };
   }, []);
 
   const handleChange = (e) => {
