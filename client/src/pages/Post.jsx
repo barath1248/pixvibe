@@ -173,7 +173,7 @@ const Post = () => {
               <div key={post.id} className="post-item">
                 <div className="post-header">
                   <img
-                    src={post.profile_picture || '/default-avatar.png'}
+                    src={post.profile_picture ? `${BASE_URL}/uploads/${post.profile_picture}` : '/default-avatar.png'}
                     alt={post.username}
                     className="post-avatar"
                     width={32}

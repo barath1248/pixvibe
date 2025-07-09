@@ -55,7 +55,7 @@ const Profile = () => {
         setBio(data.bio || '');
         setPreviewImage(
           data.profile_picture
-            ? `http://localhost:5000/uploads/${data.profile_picture}?t=${Date.now()}`
+            ? `${BASE_URL}/uploads/${data.profile_picture}?t=${Date.now()}`
             : ''
         );
       }
@@ -127,7 +127,7 @@ const Profile = () => {
       setBio(updated.bio || '');
       setPreviewImage(
         updated.profile_picture
-          ? `http://localhost:5000/uploads/${updated.profile_picture}?t=${Date.now()}`
+          ? `${BASE_URL}/uploads/${updated.profile_picture}?t=${Date.now()}`
           : ''
       );
       setFile(null);
@@ -161,7 +161,7 @@ const Profile = () => {
                 setFile(null);
                 setPreviewImage(
                   profile?.profile_picture
-                    ? `http://localhost:5000/uploads/${profile.profile_picture}?t=${Date.now()}`
+                    ? `${BASE_URL}/uploads/${profile.profile_picture}?t=${Date.now()}`
                     : ''
                 );
               }}

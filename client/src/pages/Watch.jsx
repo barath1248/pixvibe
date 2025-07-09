@@ -16,8 +16,9 @@ const Watch = () => {
     setLoading(true);
     setError('');
     try {
+      const BASE_URL = 'https://pixvibe.onrender.com';
       const response = await fetch(
-        `http://localhost:5000/api/watch?q=${encodeURIComponent(q)}&pageToken=${pageToken}`
+        `${BASE_URL}/api/watch?q=${encodeURIComponent(q)}&pageToken=${pageToken}`
       );
       const data = await response.json();
 
