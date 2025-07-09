@@ -1,21 +1,11 @@
 import express from 'express';
-import pkg from 'pg';
-const { Pool } = pkg;
 import dotenv from 'dotenv';
 import authenticateToken from '../middleware/auth.js';
+import pool from '../config/db.js';
 
 dotenv.config();
 
 const router = express.Router();
-
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-  ssl: false
-});
 
 router.use(authenticateToken);
 

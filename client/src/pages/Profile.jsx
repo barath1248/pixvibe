@@ -37,9 +37,9 @@ const Profile = () => {
     // eslint-disable-next-line
   }, [profile]);
 
+  const BASE_URL = 'https://pixvibe.onrender.com';
   const fetchProfile = async (uname) => {
     try {
-      const BASE_URL = 'https://pixvibe.onrender.com';
       const response = await fetch(`${BASE_URL}/api/profile/${uname}`);
       if (!response.ok && response.status !== 404) {
         throw new Error('Failed to fetch profile');
