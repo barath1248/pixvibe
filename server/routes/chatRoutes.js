@@ -1,22 +1,11 @@
 import express from 'express';
-import pkg from 'pg';
-const { Pool } = pkg;
 import dotenv from 'dotenv';
 import authenticateToken from '../middleware/auth.js';
+import pool from '../config/db.js';
 
 dotenv.config();
 
 const router = express.Router();
-
-// Create a new pool instance with correct configuration
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-  ssl: false
-});
 
 // Apply authentication middleware to all chat routes
 router.use(authenticateToken);
