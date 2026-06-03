@@ -20,29 +20,64 @@ const transporter = nodemailer.createTransport({
 
 
 router.post("/register", async (req, res) => {
-    const { username, email, password } = req.body;
+  const { username, email, password } = req.body;
 
-    try {
-        const checkResult = await db.query("SELECT * FROM users WHERE email = $1", [email]);
+  try {
+    console.log("========== REGISTER REQUEST ==========");
+    console.log("Request Body:", req.body);
 
-        if (checkResult.rows.length > 0) {
-            return res.status(400).json({ error: "Email already exists. Try logging in." });
-        }
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        await db.query(
-            "INSERT INTO users (username, email, password) VALUES ($1, $2, $3)",
-            [username, email, hashedPassword]
-        );
-
-        console.log("User registered successfully.");
-        
-        res.json({ message: "User registered successfully" }); 
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "Server error" });
+    if (!username || !email || !password) {
+      return res.status(400).json({
+        error: "Username, email and password are required",
+      });
     }
+
+    const checkResult = await db.query(
+      "SELECT * FROM users WHERE email = $1",
+      [email]
+    );
+
+    if (checkResult.rows.length > 0) {
+      return res.status(400).json({
+        error: "Email already exists. Try logging in.",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const result = await db.query(
+      "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *",
+      [username, email, hashedPassword]
+    );
+
+    console.log("User inserted successfully:");
+    console.log(result.rows[0]);
+
+    return res.status(201).json({
+      message: "User registered successfully",
+      user: result.rows[0],
+    });
+
+  } catch (err) {
+    console.error("\n========== REGISTER ERROR ==========");
+    console.error("Message:", err.message);
+    console.error("Code:", err.code);
+    console.error("Detail:", err.detail);
+    console.error("Table:", err.table);
+    console.error("Column:", err.column);
+    console.error("Constraint:", err.constraint);
+    console.error("Stack:", err.stack);
+    console.error("=====================================\n");
+
+    return res.status(500).json({
+      error: err.message,
+      code: err.code,
+      detail: err.detail,
+      table: err.table,
+      column: err.column,
+      constraint: err.constraint,
+    });
+  }
 });
 
 
