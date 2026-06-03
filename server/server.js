@@ -26,6 +26,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
+
+
 app.use(
   "/uploads",
   express.static(path.join(path.resolve(), "uploads"))
@@ -94,6 +96,15 @@ app.use((err, req, res, next) => {
   });
 });
 
+
+db.query("SELECT NOW()")
+  .then((result) => {
+    console.log("Database connected:", result.rows[0]);
+  })
+  .catch((err) => {
+    console.error("Database connection error:", err);
+  });
+  
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
